@@ -31,7 +31,7 @@ data_genre['avg_run_time'] = (
     .reset_index(name='avg_run_time')['avg_run_time']
 )
 ```
-The root cause was a **positional index misalignment**: `value_counts()` sorts the dataframe by frequency descending (row 0 is `Documentary`, count 159). However, `data.groupby('Genre')['Runtime'].mean().reset_index()` sorts alphabetically (row 0 is `Action`). Because the author extracted the column as a raw unindexed Series, pandas assigned values by physical row position.
+The root cause was a **positional index misalignment**: `value_counts()` sorts the dataframe by frequency descending (row 0 is `Documentary`, count 159). However, `data.groupby('Genre')['Runtime'].mean().reset_index()` sorts alphabetically (row 0 is `Action`). Because the legacy code extracted the column as a raw unindexed Series, pandas assigned values by physical row position.
 
 Consequently, `Documentary` was assigned 108.00 minutes—which is actually the mean runtime of `Action` films. The true average runtime of `Documentary` is 78.96 minutes, creating a massive **+29.04 minute error** across 159 titles. Every single genre in the legacy notebook received an incorrect runtime. I proved this mathematically in Python by comparing positional assignments against key-based lookups and documented the discrepancy in `data_quality_log.md`."
 

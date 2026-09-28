@@ -7,13 +7,11 @@
 
 ---
 
-## 1. Project Background & Original Work Attribution
+## 1. Project Overview & Business Motivation
 
-This repository is a production-grade consulting upgrade of an exploratory data analysis notebook originally authored by **Aryan Dadhich** ([@AryanDadhich26](https://github.com/AryanDadhich26)) on Kaggle and Google Colab (`Netflix_Data_Analyses.ipynb`).
+This repository delivers an end-to-end, enterprise-grade business intelligence and analytics suite evaluating the content strategy and catalog performance of 584 Netflix Original films (released between December 2014 and May 2021).
 
-The original project explored a dataset of 584 Netflix Original films (`NetflixOriginals.csv`, released between December 2014 and May 2021) answering 12 introductory questions. While the initial notebook demonstrated great curiosity and established an exploratory baseline, it operated as a monolithic single-cell Colab script with hardcoded paths, lacked dimensional modeling, suffered from critical positional calculation bugs, and contained no written business takeaways.
-
-This upgrade transforms that preliminary notebook into a complete, consulting-ready analytics suite designed around:
+Taking raw, uncurated exploratory data (`NetflixOriginals.csv` and an unoptimized legacy analysis draft), this project architects and implements a complete, consulting-ready data product designed around:
 $$\textbf{3 BUSINESS QUESTIONS} \quad\Longleftrightarrow\quad \textbf{3 ANALYTICAL TOOLS} \quad\Longleftrightarrow\quad \textbf{3 DASHBOARD PAGES}$$
 
 ---
