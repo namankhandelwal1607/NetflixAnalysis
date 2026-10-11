@@ -1,0 +1,93 @@
+table powerbi
+	lineageTag: 1a96387d-21bc-4086-a790-22bf6e46e077
+
+	column Name
+		dataType: string
+		lineageTag: 54dc3836-098c-44a8-a86c-ce2178cb8fc4
+		summarizeBy: none
+		sourceColumn: Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Extension
+		dataType: string
+		lineageTag: a8ec39d6-d9a8-47c7-acdf-fdf5347af7dd
+		summarizeBy: none
+		sourceColumn: Extension
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date accessed'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b33fdc9d-72f3-4cb8-8506-853ad71bdd7f
+		summarizeBy: none
+		sourceColumn: Date accessed
+
+		variation Variation
+			isDefault
+			relationship: 7d91e206-18d9-432c-b73b-4cbf72f258f2
+			defaultHierarchy: LocalDateTable_5e6a8170-c5af-4283-893c-45e03fb77411.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date modified'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 62ef9117-279d-4bc9-897a-2f1002a806f2
+		summarizeBy: none
+		sourceColumn: Date modified
+
+		variation Variation
+			isDefault
+			relationship: b8e41b78-4719-4e55-b2ef-99ba2ba7b89a
+			defaultHierarchy: LocalDateTable_e5d9f229-6d8b-42ae-a619-6b8fc5fb05f2.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Date created'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c2cc655c-759f-422f-b35f-c7c725216640
+		summarizeBy: none
+		sourceColumn: Date created
+
+		variation Variation
+			isDefault
+			relationship: 9e038585-de8a-47d7-bd1e-58555cc65dbd
+			defaultHierarchy: LocalDateTable_4e78fe90-349f-47c2-b7aa-e06d63b6feaa.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Folder Path'
+		dataType: string
+		lineageTag: 94b50b71-f2f0-48c0-8d36-8bdfdf11bb88
+		summarizeBy: none
+		sourceColumn: Folder Path
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition powerbi = m
+		mode: import
+		source =
+				let
+				  Source = Folder.Files("C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi")
+				in
+				  Source
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,238 @@
+{
+  "name": "NetflixDark",
+  "dataColors": [
+    "#E50914",
+    "#B81D24",
+    "#F5F5F1",
+    "#831010",
+    "#564D4D",
+    "#D4AF37",
+    "#0078D4",
+    "#2E7D32"
+  ],
+  "background": "#141414",
+  "foreground": "#FFFFFF",
+  "foregroundNeutralSecondary": "#B3B3B3",
+  "foregroundNeutralTertiary": "#808080",
+  "foregroundNeutralLight": "#564D4D",
+  "backgroundLight": "#222222",
+  "backgroundNeutral": "#181818",
+  "backgroundDark": "#0D0D0D",
+  "secondaryBackground": "#1F1F1F",
+  "tableAccent": "#E50914",
+  "accent": "#E50914",
+  "shapeStroke": "#333333",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#2D2D2D"
+              }
+            },
+            "radius": 5
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "fontSize": 12,
+            "fontFamily": "Segoe UI Semibold"
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#141414"
+              }
+            },
+            "transparency": 0
+          }
+        ]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "fontSize": 28
+          }
+        ],
+        "categoryLabels": [
+          {
+            "show": false
+          }
+        ]
+      }
+    },
+    "slicer": {
+      "*": {
+        "*": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            }
+          }
+        ],
+        "general": [
+          {
+            "outlineColor": {
+              "solid": {
+                "color": "#3A3A3A"
+              }
+            }
+          }
+        ],
+        "header": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "textSize": 11,
+            "fontSize": 11
+          }
+        ],
+        "items": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            },
+            "textSize": 11,
+            "fontSize": 11
+          }
+        ],
+        "input": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            },
+            "textSize": 11,
+            "fontSize": 11
+          }
+        ],
+        "numeric": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            },
+            "textSize": 11,
+            "fontSize": 11
+          }
+        ],
+        "slider": [
+          {
+            "show": false,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "selection": [
+          {
+            "selectAllCheckboxEnabled": true,
+            "singleSelect": false
+          }
+        ],
+        "dropdown": [
+          {
+            "borderColor": {
+              "solid": {
+                "color": "#3A3A3A"
+              }
+            },
+            "borderRadius": 4,
+            "accentBarShow": true
+          }
+        ],
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#1A1A1A"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#3A3A3A"
+              }
+            },
+            "radius": 4
+          }
+        ]
+      }
+    }
+  }
+}

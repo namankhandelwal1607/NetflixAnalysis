@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["powerbi","bridge_title_genre","dim_date","dim_genre","dim_language","fact_titles"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table powerbi
+ref table DateTableTemplate_a6f8cf3d-2b95-4acf-8079-6e0aa75d7340
+ref table LocalDateTable_5e6a8170-c5af-4283-893c-45e03fb77411
+ref table LocalDateTable_e5d9f229-6d8b-42ae-a619-6b8fc5fb05f2
+ref table LocalDateTable_4e78fe90-349f-47c2-b7aa-e06d63b6feaa
+ref table bridge_title_genre
+ref table dim_date
+ref table LocalDateTable_1bd2e1ec-d08a-46f9-b889-3ab05db0a9a9
+ref table dim_genre
+ref table dim_language
+ref table fact_titles
+
+ref cultureInfo en-US
+

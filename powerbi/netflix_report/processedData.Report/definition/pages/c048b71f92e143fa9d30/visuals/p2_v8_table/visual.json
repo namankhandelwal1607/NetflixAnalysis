@@ -1,0 +1,120 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "p2_v8_table",
+  "position": {
+    "x": 980,
+    "y": 640,
+    "z": 23,
+    "height": 410,
+    "width": 910,
+    "tabOrder": 23
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_titles"
+                    }
+                  },
+                  "Property": "primary_language"
+                }
+              },
+              "queryRef": "fact_titles.primary_language",
+              "nativeQueryRef": "primary_language"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_titles"
+                    }
+                  },
+                  "Property": "Total Titles"
+                }
+              },
+              "queryRef": "fact_titles.Total Titles",
+              "nativeQueryRef": "Total Titles"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_titles"
+                    }
+                  },
+                  "Property": "Avg IMDb Score"
+                }
+              },
+              "queryRef": "fact_titles.Avg IMDb Score",
+              "nativeQueryRef": "Avg IMDb Score"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_titles"
+                    }
+                  },
+                  "Property": "Sample Reliability Badge"
+                }
+              },
+              "queryRef": "fact_titles.Sample Reliability Badge",
+              "nativeQueryRef": "Sample Reliability Badge"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_titles"
+                  }
+                },
+                "Property": "Total Titles"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Language Perceived Quality Benchmarks & Reliability (n >= 10 vs n < 10)'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

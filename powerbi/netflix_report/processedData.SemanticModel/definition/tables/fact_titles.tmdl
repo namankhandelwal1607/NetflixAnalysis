@@ -1,0 +1,340 @@
+table fact_titles
+	lineageTag: 54794b30-f6cc-40ca-b5fa-db96c697eeac
+
+	measure 'Total Titles' = ```
+			
+			    DISTINCTCOUNT(fact_titles[title_id])
+			```
+		formatString: 0
+		lineageTag: 82fbc971-8ca4-4ea5-bdfa-6d725b2f4e6a
+
+	measure 'Avg IMDb Score' = ```
+			
+			    AVERAGE(fact_titles[imdb_score])
+			```
+		lineageTag: ba370332-7435-4cb8-85bb-e3f8b048aab0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Catalog Avg IMDb' = ```
+			
+			    CALCULATE([Avg IMDb Score], ALL(fact_titles))
+			```
+		lineageTag: b8c2d3e4-f5a6-7890-1234-567890abcdef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg IMDb Score (n>=10)' = ```
+			
+			    IF([Total Titles] >= 10, [Avg IMDb Score])
+			```
+		lineageTag: c1d2e3f4-a5b6-7890-1234-567890abcdef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Median IMDb Score' = ```
+			
+			    MEDIAN(fact_titles[imdb_score])
+			```
+		lineageTag: 16f7a2e3-48b6-4b33-9548-8f0b712b1070
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% High-Rated Titles' = ```
+			
+			    VAR HighRatedCount =
+			        CALCULATE([Total Titles], fact_titles[imdb_score] >= 7.0)
+			    VAR OverallTitles = [Total Titles]
+			    RETURN
+			        DIVIDE(HighRatedCount, OverallTitles, 0)
+			```
+		lineageTag: 0f17769f-4d99-460e-951d-5ac8845d5999
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Low-Rated Titles' = ```
+			
+			    VAR LowRatedCount =
+			        CALCULATE([Total Titles], fact_titles[imdb_score] < 5.5)
+			    VAR OverallTitles = [Total Titles]
+			    RETURN
+			        DIVIDE(LowRatedCount, OverallTitles, 0)
+			```
+		lineageTag: 0498b4bf-f431-42a1-867c-8a1618e8bc58
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Runtime' = ```
+			
+			    AVERAGE(fact_titles[runtime])
+			```
+		lineageTag: eb2bb737-e6bb-4641-a053-be7fdaacc6ef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Mature Period Titles' = ```
+			
+			    CALCULATE([Total Titles], dim_date[is_full_year] = 1)
+			```
+		formatString: 0
+		lineageTag: 4586055e-a2d8-413c-ab8a-8baa58d0df92
+
+	measure 'Titles YoY Growth %' = ```
+			
+			    VAR CurrentYear = SELECTEDVALUE(dim_date[year])
+			    VAR IsCurrentFull = SELECTEDVALUE(dim_date[is_full_year])
+			    VAR CurrentReleases = [Total Titles]
+			    VAR PriorYearReleases =
+			        CALCULATE(
+			            [Total Titles],
+			            FILTER(
+			                ALL(dim_date),
+			                dim_date[year] = CurrentYear - 1
+			                    && dim_date[is_full_year] = 1
+			            )
+			        )
+			    RETURN
+			        IF(
+			            IsCurrentFull = 1 && NOT ISBLANK(PriorYearReleases) && PriorYearReleases > 0,
+			            DIVIDE(CurrentReleases - PriorYearReleases, PriorYearReleases, BLANK()),
+			            BLANK()
+			        )
+			```
+		lineageTag: 39efab54-a9a2-47f8-8c0a-6ae901c03562
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Top Genre Share %' = ```
+			
+			    VAR MaxGenreTitles =
+			        MAXX(VALUES(fact_titles[genre_group]), [Total Titles])
+			    VAR AllTitles =
+			        CALCULATE([Total Titles], ALLSELECTED(fact_titles[genre_group]))
+			    RETURN
+			        DIVIDE(MaxGenreTitles, AllTitles, 0)
+			```
+		lineageTag: 829d06a9-b2fc-452f-ba37-296af6998980
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Language Diversity Count' = ```
+			
+			    DISTINCTCOUNT(fact_titles[primary_language])
+			```
+		formatString: 0
+		lineageTag: e44b0ba4-c763-4175-810a-c1a662b69e35
+
+	measure 'Titles in Low-Sample Groups' = ```
+			
+			    VAR CurrentGroupSize = [Total Titles]
+			    RETURN
+			        IF(CurrentGroupSize < 10, CurrentGroupSize, 0)
+			```
+		formatString: 0
+		lineageTag: 8a184d81-9c9b-4413-90a5-67c3965ffffa
+
+	measure 'Sample Reliability Badge' = ```
+			
+			    VAR TitleCount = [Total Titles]
+			    RETURN
+			        IF(
+			            TitleCount < 10,
+			            "⚠️ Low Sample (n < 10) - Interpret with Caution",
+			            "✅ Robust Sample (n >= 10)"
+			        )
+			```
+		lineageTag: ed1dd855-546b-437a-a8b9-a47daf1055f2
+
+	measure 'Titles Across All Genre Tags'
+		lineageTag: 19095883-4247-4e20-95a0-711b8011d350
+
+	column title_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 43980b12-73ba-493a-9a97-76098e35624d
+		summarizeBy: none
+		sourceColumn: title_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: 2d43f5cb-ea1c-49a1-ad5f-ddd49be161ae
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: f60ab098-8514-45c2-9ccf-b2768ed2363c
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_genre_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 777c209e-1378-4dd1-a3c5-4d96f1815eb6
+		summarizeBy: sum
+		sourceColumn: primary_genre_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_genre_name
+		dataType: string
+		lineageTag: 8a8ca750-2fa9-4bbe-bedb-b79368e09c86
+		summarizeBy: none
+		sourceColumn: primary_genre_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre_group
+		dataType: string
+		lineageTag: b03d5e56-cf65-4380-ac28-4e318db18078
+		summarizeBy: none
+		sourceColumn: genre_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_language_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b29b8363-0b42-4598-a436-2a9ba0a0b390
+		summarizeBy: sum
+		sourceColumn: primary_language_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_language
+		dataType: string
+		lineageTag: 795b148f-5c4f-4b68-a8ac-3698ffb05780
+		summarizeBy: none
+		sourceColumn: primary_language
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_multilingual
+		dataType: int64
+		formatString: 0
+		lineageTag: ca63e334-bceb-4d34-8b0d-bcdc653df264
+		summarizeBy: sum
+		sourceColumn: is_multilingual
+
+		annotation SummarizationSetBy = Automatic
+
+	column runtime
+		dataType: int64
+		formatString: 0
+		lineageTag: b6370f1d-8c42-4a0a-b8dd-b3bdec4378ac
+		summarizeBy: sum
+		sourceColumn: runtime
+
+		annotation SummarizationSetBy = Automatic
+
+	column runtime_bucket
+		dataType: string
+		lineageTag: 9271b23b-e068-4416-a380-747eee82a771
+		summarizeBy: none
+		sourceColumn: runtime_bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column imdb_score
+		dataType: double
+		lineageTag: 31d688db-3ded-4bd2-a7d6-ed2b2a03c607
+		summarizeBy: sum
+		sourceColumn: imdb_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column score_bucket
+		dataType: string
+		lineageTag: 9498a30d-4057-4ac3-be57-6a365755d6ce
+		summarizeBy: none
+		sourceColumn: score_bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column runtime_outlier = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        fact_titles[runtime] < 53, "Short Runtime",
+			        fact_titles[runtime] > 141, "Epic Runtime",
+			        "None"
+			    )
+			```
+		dataType: string
+		lineageTag: 8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_outlier = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        fact_titles[imdb_score] < 3.75, "Low Score",
+			        fact_titles[imdb_score] > 8.95, "High Score",
+			        "None"
+			    )
+			```
+		dataType: string
+		lineageTag: 9b0c1d2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_outlier = ```
+			
+			    IF(
+			        fact_titles[runtime_outlier] <> "None" || fact_titles[score_outlier] <> "None",
+			        1,
+			        0
+			    )
+			```
+		dataType: int64
+		formatString: 0
+		lineageTag: a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column outlier_type = ```
+			
+			    SWITCH(
+			        TRUE(),
+			        fact_titles[runtime] < 53, "Short Runtime",
+			        fact_titles[runtime] > 141, "Epic Runtime",
+			        fact_titles[imdb_score] < 3.75, "Low Score",
+			        fact_titles[imdb_score] > 8.95, "High Score",
+			        "None"
+			    )
+			```
+		dataType: string
+		lineageTag: 7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_titles = m
+		mode: import
+		source =
+				let
+				  Source = Folder.Files("C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi"),
+				    #"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_fact_titles csv" = Source{[#"Folder Path"="C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\",Name="fact_titles.csv"]}[Content],
+				    #"Imported CSV" = Csv.Document(#"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_fact_titles csv",[Delimiter=",", Columns=13, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Imported CSV", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"title_id", Int64.Type}, {"title", type text}, {"date_key", Int64.Type}, {"primary_genre_id", Int64.Type}, {"primary_genre_name", type text}, {"genre_group", type text}, {"primary_language_id", Int64.Type}, {"primary_language", type text}, {"is_multilingual", Int64.Type}, {"runtime", Int64.Type}, {"runtime_bucket", type text}, {"imdb_score", type number}, {"score_bucket", type text}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
