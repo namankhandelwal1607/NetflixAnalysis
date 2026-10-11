@@ -1,0 +1,36 @@
+table dim_language
+	lineageTag: 98200c7a-a931-4ad9-bf96-a6586bf92f06
+
+	column language_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1626c8ca-fd02-43a6-aaa7-49b41b86927c
+		summarizeBy: none
+		sourceColumn: language_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column language_name
+		dataType: string
+		lineageTag: 4b925574-a025-463b-8bb1-d43ce2d8963b
+		summarizeBy: none
+		sourceColumn: language_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_language = m
+		mode: import
+		source =
+				let
+				  Source = Folder.Files("C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi"),
+				    #"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_dim_language csv" = Source{[#"Folder Path"="C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\",Name="dim_language.csv"]}[Content],
+				    #"Imported CSV" = Csv.Document(#"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_dim_language csv",[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Imported CSV", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"language_id", Int64.Type}, {"language_name", type text}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

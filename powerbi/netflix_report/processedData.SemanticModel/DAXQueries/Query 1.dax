@@ -1,0 +1,109 @@
+// Paste into Power BI Desktop > DAX query view, then click "Update model with changes"
+// (or use "Update model: Add new measure" above each measure).
+
+DEFINE
+
+// 1. Total Titles - baseline volume, never double counts across the bridge
+MEASURE fact_titles[Total Titles] =
+    DISTINCTCOUNT(fact_titles[title_id])
+
+// 2. Average IMDb Score
+MEASURE fact_titles[Avg IMDb Score] =
+    AVERAGE(fact_titles[imdb_score])
+
+// 3. Median IMDb Score
+MEASURE fact_titles[Median IMDb Score] =
+    MEDIAN(fact_titles[imdb_score])
+
+// 4. % High-Rated Titles (IMDb >= 7.0)
+MEASURE fact_titles[% High-Rated Titles] =
+    VAR HighRatedCount =
+        CALCULATE([Total Titles], fact_titles[imdb_score] >= 7.0)
+    VAR OverallTitles = [Total Titles]
+    RETURN
+        DIVIDE(HighRatedCount, OverallTitles, 0)
+
+// 5. % Low-Rated Titles (IMDb < 5.5)
+MEASURE fact_titles[% Low-Rated Titles] =
+    VAR LowRatedCount =
+        CALCULATE([Total Titles], fact_titles[imdb_score] < 5.5)
+    VAR OverallTitles = [Total Titles]
+    RETURN
+        DIVIDE(LowRatedCount, OverallTitles, 0)
+
+// 6. Average Runtime (minutes)
+MEASURE fact_titles[Avg Runtime] =
+    AVERAGE(fact_titles[runtime])
+
+// 7. Titles in full years only (excludes 2014, 2015, 2021)
+MEASURE fact_titles[Mature Period Titles] =
+    CALCULATE([Total Titles], dim_date[is_full_year] = 1)
+
+// 8. Titles YoY Growth % (full years only)
+// NOTE: uses dim_date[year]. If your dim_date has no "year" column, tell me
+// and I will switch it to YEAR(dim_date[full_date]).
+MEASURE fact_titles[Titles YoY Growth %] =
+    VAR CurrentYear = SELECTEDVALUE(dim_date[year])
+    VAR IsCurrentFull = SELECTEDVALUE(dim_date[is_full_year])
+    VAR CurrentReleases = [Total Titles]
+    VAR PriorYearReleases =
+        CALCULATE(
+            [Total Titles],
+            FILTER(
+                ALL(dim_date),
+                dim_date[year] = CurrentYear - 1
+                    && dim_date[is_full_year] = 1
+            )
+        )
+    RETURN
+        IF(
+            IsCurrentFull = 1 && NOT ISBLANK(PriorYearReleases) && PriorYearReleases > 0,
+            DIVIDE(CurrentReleases - PriorYearReleases, PriorYearReleases, BLANK()),
+            BLANK()
+        )
+
+// 9. Top Genre Share % - share held by the largest genre group in context
+MEASURE fact_titles[Top Genre Share %] =
+    VAR MaxGenreTitles =
+        MAXX(VALUES(fact_titles[genre_group]), [Total Titles])
+    VAR AllTitles =
+        CALCULATE([Total Titles], ALLSELECTED(fact_titles[genre_group]))
+    RETURN
+        DIVIDE(MaxGenreTitles, AllTitles, 0)
+
+// 10. Language Diversity Count
+MEASURE fact_titles[Language Diversity Count] =
+    DISTINCTCOUNT(fact_titles[primary_language])
+
+// 11. Titles in Low-Sample Groups (n < 10) - only meaningful inside a visual
+//     grouped by genre or language
+MEASURE fact_titles[Titles in Low-Sample Groups] =
+    VAR CurrentGroupSize = [Total Titles]
+    RETURN
+        IF(CurrentGroupSize < 10, CurrentGroupSize, 0)
+
+// 12. Sample Reliability Badge - text label for visual headers
+MEASURE fact_titles[Sample Reliability Badge] =
+    VAR TitleCount = [Total Titles]
+    RETURN
+        IF(
+            TitleCount < 10,
+            "⚠️ Low Sample (n < 10) - Interpret with Caution",
+            "✅ Robust Sample (n >= 10)"
+        )
+
+// 13. Titles Across All Genre Tags - bridge traversal
+MEASURE fact_titles[Titles Across All Genre Tags] =
+    CALCULATE(
+        DISTINCTCOUNT(fact_titles[title_id]),
+        CROSSFILTER(fact_titles[title_id], bridge_title_genre[title_id], BOTH)
+    )
+
+// Quick test: should return 584 for Total Titles
+EVALUATE
+ROW(
+    "Total Titles", [Total Titles],
+    "Avg IMDb Score", [Avg IMDb Score],
+    "Avg Runtime", [Avg Runtime],
+    "% High-Rated", [% High-Rated Titles]
+)

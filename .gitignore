@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 *.log
+
+# Local Power BI backup and conflict archives
+powerbi/netflix_report_backup*/
+powerbi/netflix_report_light_design_saved/
+powerbi/onedrive_conflict_files_archive/

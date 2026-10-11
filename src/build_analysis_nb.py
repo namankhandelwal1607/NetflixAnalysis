@@ -570,7 +570,7 @@ cells.append({
         "**Original Notebook Question:** *\"Is there any outlier data in the data set? Please explain.\"*\n",
         "\n",
         "**Audit Findings & Rigorous Statistical Framework:**\n",
-        "- The original author visually eyeballed a scatter plot and claimed *The Irishman* was the sole outlier.\n",
+        "- Initial exploratory code visually eyeballed a scatter plot and claimed *The Irishman* was the sole outlier.\n",
         "- We apply the Tukey $1.5 \\times \\text{IQR}$ rule for both Runtime and IMDb Score, cross-checked with z-scores ($|z| > 3.0$).\n",
         "- We differentiate **format outliers** (shorts/specials < 40m) from **content duration outliers** (> 141m) and **perceived quality outliers**."
     ]

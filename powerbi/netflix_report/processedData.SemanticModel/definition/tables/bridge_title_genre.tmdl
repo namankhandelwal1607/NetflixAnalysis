@@ -1,0 +1,49 @@
+table bridge_title_genre
+	lineageTag: 7fc4969f-22fb-4a5c-8084-3e5cadc39fdf
+
+	measure //
+		lineageTag: 519e4e21-680c-4058-ac21-94e1953d9c77
+
+	column title_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f185371-2163-4646-bf87-dafbca652171
+		summarizeBy: none
+		sourceColumn: title_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column genre_id
+		dataType: int64
+		formatString: 0
+		lineageTag: e7c938bc-19c0-4c80-a556-8f7f2d2da940
+		summarizeBy: none
+		sourceColumn: genre_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_primary
+		dataType: int64
+		formatString: 0
+		lineageTag: 65392a5e-8ca1-4d2c-a5d4-c8f135491b43
+		summarizeBy: sum
+		sourceColumn: is_primary
+
+		annotation SummarizationSetBy = Automatic
+
+	partition bridge_title_genre = m
+		mode: import
+		source =
+				let
+				  Source = Folder.Files("C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi"),
+				    #"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_bridge_title_genre csv" = Source{[#"Folder Path"="C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\",Name="bridge_title_genre.csv"]}[Content],
+				    #"Imported CSV" = Csv.Document(#"C:\Users\naman\OneDrive\Desktop\Work\PowerBI\data\processed\powerbi\_bridge_title_genre csv",[Delimiter=",", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Imported CSV", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"title_id", Int64.Type}, {"genre_id", Int64.Type}, {"is_primary", Int64.Type}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

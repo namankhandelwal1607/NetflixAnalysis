@@ -1,0 +1,41 @@
+relationship 7d91e206-18d9-432c-b73b-4cbf72f258f2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: powerbi.'Date accessed'
+	toColumn: LocalDateTable_5e6a8170-c5af-4283-893c-45e03fb77411.Date
+
+relationship b8e41b78-4719-4e55-b2ef-99ba2ba7b89a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: powerbi.'Date modified'
+	toColumn: LocalDateTable_e5d9f229-6d8b-42ae-a619-6b8fc5fb05f2.Date
+
+relationship 9e038585-de8a-47d7-bd1e-58555cc65dbd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: powerbi.'Date created'
+	toColumn: LocalDateTable_4e78fe90-349f-47c2-b7aa-e06d63b6feaa.Date
+
+relationship db1e2c89-8a2b-40b8-92bc-ef7e1cf143b9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.full_date
+	toColumn: LocalDateTable_1bd2e1ec-d08a-46f9-b889-3ab05db0a9a9.Date
+
+relationship f2943898-cb00-e357-71b4-db63cc6157d2
+	fromColumn: fact_titles.date_key
+	toColumn: dim_date.date_key
+
+relationship 2821428b-8a13-b64e-c03b-577dba0cfdf7
+	isActive: false
+	fromColumn: fact_titles.primary_genre_id
+	toColumn: dim_genre.genre_id
+
+relationship 0aee3b68-218e-2913-8567-3bb249c70d5f
+	fromColumn: fact_titles.primary_language
+	toColumn: dim_language.language_id
+
+relationship 5530b360-8002-5ce8-cb1d-37ff298ad11e
+	fromColumn: bridge_title_genre.genre_id
+	toColumn: dim_genre.genre_id
+
+relationship 9f7ca600-75e4-2b1a-0c0a-eca25303f0cf
+	fromColumn: bridge_title_genre.title_id
+	toColumn: fact_titles.title_id
+
